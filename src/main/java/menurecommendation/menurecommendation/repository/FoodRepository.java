@@ -1,11 +1,9 @@
-package menurecommendation.menurecommendation.Repository;
+package menurecommendation.menurecommendation.repository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import menurecommendation.menurecommendation.domain.Food;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor

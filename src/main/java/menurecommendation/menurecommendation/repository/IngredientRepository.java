@@ -1,4 +1,4 @@
-package menurecommendation.menurecommendation.Repository;
+package menurecommendation.menurecommendation.repository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

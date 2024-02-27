@@ -21,4 +21,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<MemberIngredient> memberIngredients = new ArrayList<>();
+
+    public void addIngredient(MemberIngredient ingredient) {
+        this.memberIngredients.add(ingredient);
+        ingredient.setMember(this);
+    }
 }

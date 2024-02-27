@@ -1,4 +1,4 @@
-package menurecommendation.menurecommendation.Repository;
+package menurecommendation.menurecommendation.repository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,6 @@ public class MemberRepository {
 
     public Member findOne(Long memberId) {
         return em.find(Member.class, memberId);
-    }
-
-    public List<Member> findByName(String username) {
-        return em.createQuery("select m from Member m where m.username = :username", Member.class)
-                .setParameter("username", username).getResultList();
     }
 
     public List<Member> findAll() {

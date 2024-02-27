@@ -1,7 +1,6 @@
-package menurecommendation.menurecommendation.Repository;
+package menurecommendation.menurecommendation.repository;
 
 import menurecommendation.menurecommendation.domain.Member;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MemberRepositoryTest {
@@ -33,28 +31,6 @@ class MemberRepositoryTest {
 
         //then
         assertThat(member.getUsername()).isEqualTo(findMember.getUsername());
-    }
-
-    @Test
-    @DisplayName("회원 이름 조회")
-    @Transactional
-    void findByName() throws Exception {
-        //given
-        Member member1 = new Member();
-        Member member2 = new Member();
-        Member member3 = new Member();
-        member1.setUsername("memberA");
-        member2.setUsername("memberA");
-        member3.setUsername("memberB");
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-
-        //when
-        List<Member> members = memberRepository.findByName("memberA");
-
-        //then
-        assertThat(members.size()).isEqualTo(2);
     }
 
     @Test
