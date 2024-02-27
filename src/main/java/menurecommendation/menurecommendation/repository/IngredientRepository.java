@@ -18,4 +18,11 @@ public class IngredientRepository {
     public Ingredient findOne(Long ingredientId) {
         return em.find(Ingredient.class, ingredientId);
     }
+
+    public void delete(Long ingredientId) {
+        Ingredient findOne = em.find(Ingredient.class, ingredientId);
+        if (findOne != null) {
+            em.remove(findOne);
+        }
+    }
 }
