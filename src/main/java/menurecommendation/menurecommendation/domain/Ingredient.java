@@ -31,4 +31,11 @@ public class Ingredient {
         memberIngredient.setIngredient(this);
         return memberIngredient;
     }
+
+    public FoodIngredient conversionFoodIngredient() {
+        FoodIngredient foodIngredient = new FoodIngredient();
+        this.foodIngredients.add(foodIngredient);
+        foodIngredient.setIngredient(this);
+        return foodIngredient;
+    }
 }

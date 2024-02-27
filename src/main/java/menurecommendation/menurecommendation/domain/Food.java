@@ -21,4 +21,9 @@ public class Food {
 
     @OneToMany(mappedBy = "food")
     private List<FoodIngredient> foodIngredients = new ArrayList<>();
+
+    public void addIngredient(FoodIngredient foodIngredient) {
+        this.foodIngredients.add(foodIngredient);
+        foodIngredient.setFood(this);
+    }
 }
