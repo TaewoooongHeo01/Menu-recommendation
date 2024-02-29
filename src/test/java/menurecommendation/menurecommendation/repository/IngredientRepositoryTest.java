@@ -29,4 +29,20 @@ class IngredientRepositoryTest {
         //then
         assertThat(findIngredient.getId()).isEqualTo(ingredient.getId());
     }
+
+    @Test
+    @DisplayName("이름으로 조회")
+    @Transactional
+    void findByName() throws Exception {
+        //given
+        Ingredient ingredient = new Ingredient();
+        ingredient.setIngredientName("고추장");
+        ingredientRepository.save(ingredient);
+
+        //when
+        Ingredient findIngredient = ingredientRepository.findByName("고추장");
+
+        //then
+        assertThat(ingredient.getIngredientName()).isEqualTo(findIngredient.getIngredientName());
+    }
 }

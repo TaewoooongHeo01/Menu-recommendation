@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### API KEY ###
+#/src/main/resources/application-API-KEY.properties
+#/src/main/resources/application.properties
+
+### food info ###
+/src/main/java/menurecommendation/menurecommendation/foods.json

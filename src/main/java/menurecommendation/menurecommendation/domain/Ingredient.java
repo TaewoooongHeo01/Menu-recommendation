@@ -25,6 +25,12 @@ public class Ingredient {
     @OneToMany(mappedBy = "ingredient")
     private List<FoodIngredient> foodIngredients = new ArrayList<>();
 
+    public Ingredient() {};
+
+    public Ingredient(String ingredientName) {
+        this.ingredientName = ingredientName;
+    }
+
     public MemberIngredient conversionMemberIngredient() {
         MemberIngredient memberIngredient = new MemberIngredient();
         this.memberIngredients.add(memberIngredient);
