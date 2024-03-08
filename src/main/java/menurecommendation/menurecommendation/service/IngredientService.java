@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import menurecommendation.menurecommendation.domain.Food;
 import menurecommendation.menurecommendation.domain.Ingredient;
+import menurecommendation.menurecommendation.dto.IngredientDTO;
 import menurecommendation.menurecommendation.repository.IngredientRepository;
 import org.json.simple.JSONArray;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -80,8 +81,13 @@ public class IngredientService {
 
     public String getAllIngredientsJson() throws JsonProcessingException {
         List<Ingredient> ingredients = ingredientRepository.findAll(); // 모든 재료 조회
+        List<IngredientDTO> ingredientDTOS = new ArrayList<>();
+        for (int i = 0; i < ingredients.size(); i++) {
+            IngredientDTO ingredientDTO = new IngredientDTO(ingredients.get(i).getId(), ingredients.get(i).getIngredientName());
+            ingredientDTOS.add(ingredientDTO);
+        }
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(ingredients); // List를 JSON 문자열로 변환
-        return json;
+        String ingredientDTOSjson = mapper.writeValueAsString(ingredientDTOS); // List를 JSON 문자열로 변환
+        return ingredientDTOSjson;
     }
 }

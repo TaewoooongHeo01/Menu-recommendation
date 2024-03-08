@@ -17,11 +17,9 @@ public class FoodIngredient {
 
     @ManyToOne
     @JoinColumn(name = "food_id")
-    @JsonBackReference
     private Food food;
 
     @ManyToOne
     @JoinColumn(name = "ingredient_id")
-    @JsonBackReference
     private Ingredient ingredient;
 }

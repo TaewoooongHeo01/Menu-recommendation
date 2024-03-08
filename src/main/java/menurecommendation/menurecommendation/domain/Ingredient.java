@@ -24,7 +24,6 @@ public class Ingredient {
     private List<MemberIngredient> memberIngredients = new ArrayList<>();
 
     @OneToMany(mappedBy = "ingredient")
-    @JsonManagedReference
     private List<FoodIngredient> foodIngredients = new ArrayList<>();
 
     public Ingredient() {};
