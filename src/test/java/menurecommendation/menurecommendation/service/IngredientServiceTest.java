@@ -67,7 +67,7 @@ IngredientServiceTest {
     void jsonToIngredientAndFood() throws Exception {
         //given
         ingredientService.getIRDNT();
-        Food findFood = foodService.findByName("연두부달걀찜");
+        Food findFood = foodService.findByName("간장달걀밥");
 
         for (int i = 0; i < findFood.getFoodIngredients().size(); i++) {
             System.out.println(findFood.getFoodIngredients().get(i).getIngredient().getIngredientName());

@@ -1,5 +1,6 @@
 package menurecommendation.menurecommendation.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Food {
     private String foodName;
 
     @OneToMany(mappedBy = "food")
+    @JsonManagedReference
     private List<FoodIngredient> foodIngredients = new ArrayList<>();
 
     public void addIngredient(FoodIngredient foodIngredient) {

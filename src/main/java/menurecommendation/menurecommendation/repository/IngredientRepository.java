@@ -32,6 +32,11 @@ public class IngredientRepository {
         }
     }
 
+    public List<Ingredient> findAll() {
+        return em.createQuery("select i from Ingredient i", Ingredient.class)
+                .getResultList();
+    }
+
     public void delete(Long ingredientId) {
         Ingredient findOne = em.find(Ingredient.class, ingredientId);
         if (findOne != null) {
