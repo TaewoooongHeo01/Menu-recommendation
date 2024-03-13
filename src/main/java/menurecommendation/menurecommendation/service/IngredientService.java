@@ -79,13 +79,17 @@ public class IngredientService {
         }
     }
 
-    public String getAllIngredientsJson() throws JsonProcessingException {
+    public List<IngredientDTO> getAllIngredientsDTO() {
         List<Ingredient> ingredients = ingredientRepository.findAll(); // 모든 재료 조회
         List<IngredientDTO> ingredientDTOS = new ArrayList<>();
         for (int i = 0; i < ingredients.size(); i++) {
             IngredientDTO ingredientDTO = new IngredientDTO(ingredients.get(i).getId(), ingredients.get(i).getIngredientName());
             ingredientDTOS.add(ingredientDTO);
         }
+        return ingredientDTOS;
+    }
+
+    public String ingredientDTOtoJSON(List<IngredientDTO> ingredientDTOS) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String ingredientDTOSjson = mapper.writeValueAsString(ingredientDTOS); // List를 JSON 문자열로 변환
         return ingredientDTOSjson;
