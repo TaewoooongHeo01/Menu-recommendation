@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import menurecommendation.menurecommendation.domain.Food;
+import menurecommendation.menurecommendation.domain.FoodIngredient;
 import menurecommendation.menurecommendation.domain.Ingredient;
 import menurecommendation.menurecommendation.dto.IngredientDTO;
 import menurecommendation.menurecommendation.repository.IngredientRepository;
@@ -72,10 +73,10 @@ public class IngredientService {
                 ingredient = new Ingredient(ingredientName);
             }
 
-            foodService.addIngredient(food.getId(), ingredient);
+            FoodIngredient foodIngredient = foodService.ConnectIngredient(food.getId(), ingredient);
 
             lastFood = currentFood;
-            ingredientRepository.save(ingredient);
+            ingredientRepository.save(foodIngredient.getIngredient());
         }
     }
 
@@ -91,7 +92,6 @@ public class IngredientService {
 
     public String ingredientDTOtoJSON(List<IngredientDTO> ingredientDTOS) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String ingredientDTOSjson = mapper.writeValueAsString(ingredientDTOS); // List를 JSON 문자열로 변환
-        return ingredientDTOSjson;
+        return mapper.writeValueAsString(ingredientDTOS);
     }
 }

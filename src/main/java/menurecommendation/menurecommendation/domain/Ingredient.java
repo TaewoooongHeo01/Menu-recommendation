@@ -1,7 +1,5 @@
 package menurecommendation.menurecommendation.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,10 +19,10 @@ public class Ingredient {
 
     private String ingredientName;
 
-    @OneToMany(mappedBy = "ingredient")
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
     private List<MemberIngredient> memberIngredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "ingredient")
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
     private List<FoodIngredient> foodIngredients = new ArrayList<>();
 
     public Ingredient() {};

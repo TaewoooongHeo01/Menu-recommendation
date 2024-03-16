@@ -21,7 +21,7 @@ public class Food {
 
     private String foodName;
 
-    @OneToMany(mappedBy = "food")
+    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL)
     private List<FoodIngredient> foodIngredients = new ArrayList<>();
 
     public void addIngredient(FoodIngredient foodIngredient) {
