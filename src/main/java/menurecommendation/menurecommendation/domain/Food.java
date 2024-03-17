@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -27,5 +28,10 @@ public class Food {
     public void addIngredient(FoodIngredient foodIngredient) {
         this.foodIngredients.add(foodIngredient);
         foodIngredient.setFood(this);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

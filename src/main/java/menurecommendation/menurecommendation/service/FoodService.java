@@ -1,23 +1,25 @@
 package menurecommendation.menurecommendation.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import menurecommendation.menurecommendation.domain.Food;
 import menurecommendation.menurecommendation.domain.FoodIngredient;
 import menurecommendation.menurecommendation.domain.Ingredient;
+import menurecommendation.menurecommendation.dto.FoodDTO;
 import menurecommendation.menurecommendation.dto.IngredientDTO;
 import menurecommendation.menurecommendation.repository.FoodRepository;
 import menurecommendation.menurecommendation.repository.IngredientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class FoodService {
 
     private final FoodRepository foodRepository;
@@ -54,23 +56,55 @@ public class FoodService {
         return foodIngredients;
     }
 
-    //각 음식 당 선택된 재료들이 얼마나 들어가는지 확인.
-    public Map<Food, Integer> findFood(List<Ingredient> ingredients) {
-        Map<Food, Integer> foodCountMap = new HashMap<>();
+    //각 음식 당 선택된 재료들이 얼마나 들어가는지 확인
+    public Map<Long, Integer> findFood(List<Ingredient> ingredients) {
+        Map<Long, Integer> foodCountMap = new HashMap<>();
         for (Ingredient ingredient : ingredients) {
             List<FoodIngredient> foods = ingredient.getFoodIngredients();
-            for(int j = 0; j < foods.size(); j++) {
-                Food findFood = foods.get(j).getFood();
-                if (foodCountMap.containsKey(findFood)) {
-                    Integer count = foodCountMap.get(findFood);
-                    foodCountMap.put(findFood, count + 1);
+            for (FoodIngredient food : foods) {
+                Food findFood = food.getFood();
+                if (foodCountMap.containsKey(findFood.getId())) {
+                    Integer count = foodCountMap.get(findFood.getId());
+                    foodCountMap.put(findFood.getId(), count + 1);
                     continue;
                 }
-                foodCountMap.put(findFood, 1);
+                foodCountMap.put(findFood.getId(), 1);
             }
         }
         return foodCountMap;
     }
 
+    public Food recommendFood(Map<Long, Integer> foodCountMap) {
+        List<Food> randomList = new ArrayList<>();
+        List<Food> recommendList = new ArrayList<>();
+        foodCountMap.forEach((key, value) -> {
+            Food findFood = foodRepository.findOne(key);
+            double foodIngredientCount = findFood.getFoodIngredients().size();
+            double currentIngredientCount = foodCountMap.get(key);
+            randomList.add(findFood);
+            log.info("일치도: "+(currentIngredientCount / foodIngredientCount));
+            if((currentIngredientCount / foodIngredientCount) >= 0.7) {
+                log.info("추가된 음식: "+findFood.getFoodName());
+                recommendList.add(findFood);
+            }
+        });
+        if (recommendList.size() == 0) {
+            Random rn = new Random();
+            int randomIdx = rn.nextInt(randomList.size() - 1);
+            return randomList.get(randomIdx);
+        }
+        Random rn = new Random();
+        int randomIdx = rn.nextInt(recommendList.size() - 1);
+        return recommendList.get(randomIdx);
+    }
 
+    public String foodToJson(Food food) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> foodIngredientName = new ArrayList<>();
+        for(int i = 0; i < food.getFoodIngredients().size(); i++) {
+            foodIngredientName.add(food.getFoodIngredients().get(i).getIngredient().getIngredientName());
+        }
+        FoodDTO foodDTO = new FoodDTO(food.getId(), food.getFoodName(), foodIngredientName);
+        return objectMapper.writeValueAsString(foodDTO);
+    }
 }
