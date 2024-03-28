@@ -25,7 +25,6 @@ public class IngredientController {
 
     private final IngredientService ingredientService;
 
-    @CrossOrigin("http://localhost:3000")
     @GetMapping("/")
     public ResponseEntity<String> getAllIngredients() throws IOException, ParseException {
         ingredientService.getIRDNT();

@@ -27,7 +27,6 @@ public class FoodController {
 
     private final FoodService foodService;
 
-    @CrossOrigin("http://localhost:3000")
     @PostMapping("/igd")
     public ResponseEntity<String> postIGD(@RequestBody String selectedIngredients) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

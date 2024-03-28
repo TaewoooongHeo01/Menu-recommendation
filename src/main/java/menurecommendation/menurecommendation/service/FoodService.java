@@ -82,7 +82,6 @@ public class FoodService {
             double foodIngredientCount = findFood.getFoodIngredients().size();
             double currentIngredientCount = foodCountMap.get(key);
             randomList.add(findFood);
-            log.info("일치도: "+(currentIngredientCount / foodIngredientCount));
             if((currentIngredientCount / foodIngredientCount) >= 0.7) {
                 log.info("추가된 음식: "+findFood.getFoodName());
                 recommendList.add(findFood);
