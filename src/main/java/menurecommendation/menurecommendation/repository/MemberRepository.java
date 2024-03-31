@@ -25,4 +25,9 @@ public class MemberRepository {
         return em.createQuery("select m from Member m", Member.class)
                 .getResultList();
     }
+
+    public Member findByEmail(String email) {
+//        return em.createQuery("select m from Member m", Member.class)
+        return new Member();
+    }
 }
