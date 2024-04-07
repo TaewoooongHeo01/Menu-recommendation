@@ -49,4 +49,54 @@ class MemberRepositoryTest {
         //then
         assertThat(members.size()).isEqualTo(2);
     }
+
+    @Test
+    @Transactional
+    void login() throws Exception {
+        //given
+        Member member = new Member();
+        member.setEmail("123@123");
+        member.setPasswd("123");
+        memberRepository.save(member);
+
+        //when
+        Member loginMember = memberRepository.login(member.getEmail(), member.getPasswd());
+
+        //then
+        assertThat(loginMember.getEmail()).isEqualTo(member.getEmail());
+        assertThat(loginMember.getPasswd()).isEqualTo(member.getPasswd());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("이메일 중복 체크 -> 사용가능")
+    void emailCheckPossible() throws Exception {
+        //given
+        Member member = new Member();
+        member.setEmail("123@123");
+
+        //when
+        Member findMember = memberRepository.emailCheck(member.getEmail());
+
+        //then
+        assertThat(findMember).isEqualTo(null);
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("이메일 중복 체크 -> 사용 불가")
+    void emailCheckNotPossible() throws Exception {
+        //given
+        Member memberA = new Member();
+        memberA.setEmail("123@123");
+        memberRepository.save(memberA);
+        Member memberB = new Member();
+        memberB.setEmail("123@123");
+
+        //when
+        Member findMember = memberRepository.emailCheck(memberB.getEmail());
+
+        //then
+        assertThat(findMember).isEqualTo(memberA);
+    }
 }

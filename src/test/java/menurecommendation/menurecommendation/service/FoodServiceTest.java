@@ -44,8 +44,8 @@ class FoodServiceTest {
 
         //when
         foodService.save(food);
-        foodService.addIngredient(food.getId(), ingredientA);
-        foodService.addIngredient(food.getId(), ingredientB);
+        foodService.ConnectIngredient(food.getId(), ingredientA);
+        foodService.ConnectIngredient(food.getId(), ingredientB);
         Food findOne = foodService.findOne(food.getId());
 
         //then

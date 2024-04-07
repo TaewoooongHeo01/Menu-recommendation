@@ -1,6 +1,7 @@
 package menurecommendation.menurecommendation.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import menurecommendation.menurecommendation.domain.Ingredient;
 import menurecommendation.menurecommendation.domain.Member;
 import menurecommendation.menurecommendation.domain.MemberIngredient;
@@ -13,6 +14,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -36,5 +38,18 @@ public class MemberService {
         MemberIngredient memberIngredient = ingredient.conversionMemberIngredient();
         findMember.addIngredient(memberIngredient);
         memberIngredient.setMember(findMember);
+    }
+
+    public Member login(String email, String passwd) {
+        return memberRepository.login(email, passwd);
+    }
+
+    public boolean emailCheck(String email) {
+        Member findMember = memberRepository.emailCheck(email);
+        log.info("email check member: "+findMember);
+        if(findMember == null) {
+            return true;
+        }
+        return false;
     }
 }

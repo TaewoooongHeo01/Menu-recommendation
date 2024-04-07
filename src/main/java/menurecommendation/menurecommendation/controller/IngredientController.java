@@ -1,14 +1,8 @@
 package menurecommendation.menurecommendation.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import menurecommendation.menurecommendation.domain.Food;
-import menurecommendation.menurecommendation.domain.Ingredient;
 import menurecommendation.menurecommendation.dto.IngredientDTO;
-import menurecommendation.menurecommendation.service.FoodService;
 import menurecommendation.menurecommendation.service.IngredientService;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;

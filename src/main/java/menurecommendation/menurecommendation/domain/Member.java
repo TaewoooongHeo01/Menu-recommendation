@@ -32,4 +32,15 @@ public class Member {
         this.memberIngredients.add(ingredient);
         ingredient.setMember(this);
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", passwd='" + passwd + '\'' +
+                ", username='" + username + '\'' +
+                ", memberIngredients=" + memberIngredients +
+                '}';
+    }
 }

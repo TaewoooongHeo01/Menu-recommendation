@@ -74,4 +74,37 @@ class MemberServiceTest {
         //then
         assertThat(findMember.getMemberIngredients().size()).isEqualTo(2);
     }
+
+    @Test
+    @Transactional
+    @DisplayName("이메일 중복 체크 -> 사용가능")
+    void emailCheckPossible() throws Exception {
+        //given
+        Member member = new Member();
+        member.setEmail("123@123");
+
+        //when
+        boolean check = memberService.emailCheck(member.getEmail());
+
+        //then
+        assertThat(check).isTrue();
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("이메일 중복 체크 -> 사용 불가")
+    void emailCheckNotPossible() throws Exception {
+        //given
+        Member memberB = new Member();
+        memberB.setEmail("123@123");
+        memberService.join(memberB);
+        Member memberA = new Member();
+        memberA.setEmail("123@123");
+
+        //when
+        boolean check = memberService.emailCheck(memberA.getEmail());
+
+        //then
+        assertThat(check).isFalse();
+    }
 }
