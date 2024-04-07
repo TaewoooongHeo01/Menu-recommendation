@@ -1,5 +1,8 @@
 package menurecommendation.menurecommendation.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import menurecommendation.menurecommendation.domain.Ingredient;
@@ -41,7 +44,12 @@ public class MemberService {
     }
 
     public Member login(String email, String passwd) {
-        return memberRepository.login(email, passwd);
+        Member findMember = memberRepository.login(email, passwd);
+        if(findMember == null) {
+            return null;
+        }
+//        session.setAttribute("member", String.valueOf(findMember.getId()));
+        return findMember;
     }
 
     public boolean emailCheck(String email) {
@@ -51,5 +59,10 @@ public class MemberService {
             return true;
         }
         return false;
+    }
+
+    public String memberToJson(Member member) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(member);
     }
 }

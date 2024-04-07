@@ -1,5 +1,8 @@
 package menurecommendation.menurecommendation.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +24,6 @@ public class MemberController {
 
     @PostMapping ("/signup")
     public ResponseEntity<String> signup(@RequestBody MemberDTO memberDTO) {
-        log.info("memberDTO: " + memberDTO.toString());
         try {
             memberService.join(memberDTO.toEntity());
             return ResponseEntity.ok().body("server: 회원가입 성공");
@@ -32,9 +34,7 @@ public class MemberController {
 
     @PostMapping("/emailCheck")
     public ResponseEntity<String> checkEmail(@RequestBody checkEmailDTO checkEmailDTO) {
-        log.info("checkEmailDTO: " + checkEmailDTO.toString());
         boolean check = memberService.emailCheck(checkEmailDTO.getEmail());
-        log.info("check: " + check);
         if (check) {
             return ResponseEntity.ok().body("이메일 사용가능");
         }
@@ -44,15 +44,24 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<String> login(
             @RequestBody LoginForm loginForm,
-            HttpSession httpSession) {
-        log.info("login email: " + loginForm.getEmail());
-        log.info("login passwd: " + loginForm.getPasswd());
-        //email 로 member 찾고, member id 로 쿠키 생성해서 보내기
+            HttpServletResponse res,
+            HttpSession httpSession) throws JsonProcessingException {
         Member findMember = memberService.login(loginForm.getEmail(), loginForm.getPasswd());
-        log.info("findMember: " + findMember);
         if (findMember == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
         }
-        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공");
+        Cookie cookie = new Cookie("memberId", String.valueOf(findMember.getId()));
+        cookie.setPath("/"); // 쿠키의 유효 경로 설정
+        cookie.setHttpOnly(true); // JavaScript를 통한 접근 방지
+        cookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키의 유효 시간 설정 (예: 1주일)
+        cookie.setSecure(true); // SameSite=None을 사용하기 위해 필요
+        cookie.setMaxAge(60 * 60 * 24); // 1일
+
+        String cookieValue = "key=value; Path=/; HttpOnly; Secure; SameSite=Lax";
+        res.addHeader("Set-Cookie", cookieValue);
+        res.addCookie(cookie);
+        String memberInfo = memberService.memberToJson(findMember);
+        log.info("memberJson: "+memberInfo);
+        return ResponseEntity.status(HttpStatus.OK).body(memberInfo);
     }
 }
