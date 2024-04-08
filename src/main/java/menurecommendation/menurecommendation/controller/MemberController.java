@@ -50,6 +50,7 @@ public class MemberController {
         if (findMember == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
         }
+
         Cookie cookie = new Cookie("memberId", String.valueOf(findMember.getId()));
         cookie.setPath("/"); // 쿠키의 유효 경로 설정
         cookie.setHttpOnly(true); // JavaScript를 통한 접근 방지
@@ -57,7 +58,7 @@ public class MemberController {
         cookie.setSecure(true); // SameSite=None을 사용하기 위해 필요
         cookie.setMaxAge(60 * 60 * 24); // 1일
 
-        String cookieValue = "key=value; Path=/; HttpOnly; Secure; SameSite=Lax";
+        String cookieValue = "key=value; Path=/; HttpOnly; Secure; SameSite=None";
         res.addHeader("Set-Cookie", cookieValue);
         res.addCookie(cookie);
         String memberInfo = memberService.memberToJson(findMember);

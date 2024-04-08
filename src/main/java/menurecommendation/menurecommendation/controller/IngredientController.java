@@ -1,5 +1,7 @@
 package menurecommendation.menurecommendation.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import menurecommendation.menurecommendation.dto.IngredientDTO;
@@ -20,7 +22,18 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     @GetMapping("/")
-    public ResponseEntity<String> getAllIngredients() throws IOException, ParseException {
+    public ResponseEntity<String> getAllIngredients(
+            HttpServletRequest request) throws IOException, ParseException {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("memberId".equals(cookie.getName())) {
+                    log.info("memberId: " + cookie.getValue());
+                }
+            }
+        } else {
+            log.info("no cookie");
+        }
         ingredientService.getIRDNT();
         try {
             List<IngredientDTO> ingredientDTOS = ingredientService.getAllIngredientsDTO();
@@ -30,7 +43,6 @@ public class IngredientController {
             }
             return new ResponseEntity<>(json, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
